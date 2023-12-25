@@ -1,0 +1,8 @@
+How to create websockts and using them (Basic example): https://www.youtube.com/watch?v=R4-XRK6NqMA
+
+Over all project follow-up link: https://www.youtube.com/watch?v=SF1k_Twr9cg&list=LL&index=8
+
+Oversimplified websockets: 
+
+Coroutines are generalizations of subroutines. They are used for cooperative multitasking where a process 
+voluntarily yield (give away) control periodically or when idle in order to enable multiple applications to be run simultaneously.

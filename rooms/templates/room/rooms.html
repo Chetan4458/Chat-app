@@ -1,0 +1,29 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Rooms{% endblock title %}
+
+{% block body %}
+<div class="container">
+    <h1 class = "text-light text-center py-5">Rooms</h1>
+</div>
+<div class = "container">
+    <div class="d-flex flex-row mb-3">
+        {% for x in rooms %}
+            <div class="p-2 text-light">
+                <div class="card" style="width: 18rem; height: 28rem;">
+                    <img src="{{ x.image }}" class="card-img-top" alt="..." style = "height: 15rem;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-dark">{{ x.name }}</h5>
+                        <p class="card-text text-dark">{{ x.text }}</p>
+                        <a href="{% url 'room' x.slug %}" class="btn btn-success">Join</a>
+                    </div>
+                </div>
+            </div>   
+        {% endfor %} 
+    </div>
+</div>
+
+
+
+{% endblock body %}
+

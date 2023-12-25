@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Log in{% endblock title %}
+
+{% block body %}
+<div class="container">
+    <h1 class="text-light text-center pt-5">Log in</h1>
+</div>
+
+<div class="container pt-5">
+    <div class = "row justify-content-center">
+        <div class = "col-5">
+            <form method = "post" action = "/login/">
+                {% csrf_token %}
+                <div class="mb-3 form-group">
+                    <label for="Username" class="text-light form-label">Username</label>
+                    <input type="text" class="form-control" id="text" name = "username" aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="exampleInputPassword1" class="text-light form-label">Password</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" name = "password1">
+                </div>                
+                <div class="center-text text-danger">
+                    {% if form.subject.errors %}
+                        <ol>
+                        {% for error in form.subject.errors %}
+                            <li><strong>{{ error|escape }}</strong></li>
+                        {% endfor %}
+                        </ol>
+                    {% endif %}
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="text-center btn btn-warning">Log in</button> 
+                </div>
+            </form>
+        </div>
+    </div>    
+</div>
+
+
+
+{% endblock body %}

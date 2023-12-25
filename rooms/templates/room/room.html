@@ -1,0 +1,82 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ room.name }}{% endblock title %}
+
+{% block body %}
+<div class="container">
+    <h1 class="text-light text-center pt-5">{{ room.name }}</h1>
+</div>
+
+<div class="container col-5 my-5">
+    <div class="d-flex flex-column p-2 bg-light rounded-4" style="height: 400px; overflow-y:auto;" id = 'messagebox'>
+        {% for message in messages  %}
+        <div class="p2 grey-white rounded-4 my-2">
+            <div>
+                <p class = "px-2 pt-2"><strong>{{message.user.username}}</strong></p>
+                <p class = "px-2">{{message.content}}</p>
+            </div>
+        </div>
+        {% endfor %}   
+    </div>
+</div>
+
+<div class="container col-5 bg-dark">    
+    <form id = "form">                        
+        <div class="d-flex flex-row mb-3 bg-light py-2 rounded-4">
+            <div class="p-2 flex-grow-1">
+                <input type="text" class="form-control border-white" name = "message" aria-describedby="emailHelp" placeholder = "Your message">                          
+            </div> 
+            <div class="p-2">
+                <button type="submit" class="btn btn-success">Send</button>
+            </div>            
+        </div>    
+    </form>
+</div>
+
+{{ room.slug|json_script:"json_room_slug" }}
+{{ request.user.username|json_script:"json_username" }}
+{% comment %} <script id = "json_room">{{room.slug}}</script> {% endcomment %}
+<script type = 'text/javascript'>    
+    let room = JSON.parse(document.getElementById('json_room_slug').textContent)
+    let url = "ws://"+ window.location.host+ "/ws/" + room + '/';
+    console.log(url)
+    let user = JSON.parse(document.getElementById('json_username').textContent)
+    {% comment %} console.log(user) {% endcomment %}
+    const chatsocket = new WebSocket(url);
+
+    chatsocket.onmessage = function(event) // To listen to our server (Fires when server sends message from backend)
+    {
+        let data = JSON.parse(event.data)
+        
+        console.log('Data: ',data)
+
+        if (data['type'] == 'chat'){
+            let html = '<div class="p2 grey-white rounded-4 my-2">'
+            html += '<div>'
+            html += '<p class = "px-2 pt-2"><strong>' + data.username +'</strong></p>'
+            html +=        '<p class = "px-2">' + data.message +'</p>'
+            html +=    '</div>'
+            html += '</div>'
+            document.getElementById('messagebox').innerHTML += html
+        }
+    }
+
+    let form = document.getElementById('form')
+    {% comment %} EventListener listens to the target object(form in this case)
+    and waits until submit event occurs and when it occurs this function is executed {% endcomment %}
+    form.addEventListener('submit',function(event){
+        event.preventDefault()
+        // Syntax:
+        // variable value = event.target(referring to target element).(name=? of element).value
+        let message = event.target.message.value
+        //console.log("console",message)
+        chatsocket.send(JSON.stringify({
+            'message': message,
+            'username' : user,
+            'room' : room  
+        }))    
+        form.reset() //To reset the form to empty(continuos chatting)
+    })
+</script>
+
+{% endblock body %}
