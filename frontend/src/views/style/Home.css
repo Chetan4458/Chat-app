@@ -1,0 +1,13 @@
+/* styles.css or App.css */
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url("C:\react\Todo-List-React-and-Django-master\Todo-List-React-and-Django-master\testimonials.png"); /* Specify the path to your image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 97vh;
+  }
+  
+  /* Your navbar styles go here */
+  
